@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 6013318312778083992}
   - component: {fileID: 601373765967237004}
   - component: {fileID: 6614615641420465155}
+  - component: {fileID: 1081863093140553382}
   m_Layer: 0
   m_Name: Delivery Counter
   m_TagString: Untagged
@@ -218,6 +219,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedCounter: {fileID: 7675379594622355088}
+--- !u!114 &1081863093140553382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5522088184048632007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c72ef52ed61b4639bf2fdf77dacca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6702092604596559635
 GameObject:
   m_ObjectHideFlags: 0

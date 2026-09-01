@@ -10,12 +10,17 @@ public class RecipeManagerController : MonoBehaviour {
     public List<BurgerRecipeSO> RecipesOnQueue => recipesOnQueue;
     private RecipeManagerEventBus recipeManagerEventBus;
     private Coroutine currentCoroutine = null;
+    private bool isRecievingNewOrders = true;
+    public bool IsRecievingNewOrders => isRecievingNewOrders;
+    public void RecieveNewOrders(bool val) {
+        isRecievingNewOrders = val;
+    }
     void Awake() {
         recipeManagerEventBus = GetComponent<RecipeManagerEventBus>();
         recipesOnQueue = new List<BurgerRecipeSO>();
     }
     void Update() {
-        if (recipesOnQueue.Count < maxNbrRecipesOnQueue && (currentCoroutine == null)) {
+        if (isRecievingNewOrders && recipesOnQueue.Count < maxNbrRecipesOnQueue && (currentCoroutine == null)) {
             currentCoroutine = StartCoroutine(TryAddRecipeToQueue());
         }
     }
@@ -27,7 +32,31 @@ public class RecipeManagerController : MonoBehaviour {
         recipeManagerEventBus.InvokeOnRecipeAddedToQueue(chosenRecipe);
         currentCoroutine = null;
     }
-    public bool RemoveRecipeFromQueue(BurgerRecipeSO burgerRecipeSO) {
+    private bool TryRemoveRecipeFromQueue(BurgerRecipeSO burgerRecipeSO) {
         return recipesOnQueue.Remove(burgerRecipeSO);
+    }
+    private bool TryRemoveRecipeFromQueue(BurgerScript burgerScript) {
+        bool allMatch;
+        foreach (BurgerRecipeSO possibleRecipe in possibleRecipes) {
+            allMatch = true;
+            if (possibleRecipe.ingredients.Count == burgerScript.GetAddedIngredients.Count) {
+                foreach (KitchenObjectSO ingredient in possibleRecipe.ingredients) {
+                    if (!burgerScript.GetAddedIngredients.Contains(ingredient)) {
+                        allMatch = false;
+                        break;
+                    }
+                }
+                if (allMatch) return TryRemoveRecipeFromQueue(possibleRecipe);
+            }
+            else {
+                continue;
+            }
+        }
+        return false;
+    }
+    public bool TrySendingOrder(BurgerScript burgerScript) {
+        bool isBurgerRecipeCorrect = TryRemoveRecipeFromQueue(burgerScript);
+        if (!isBurgerRecipeCorrect) recipeManagerEventBus.InvokeOnWrongOrderDelivered();
+        return isBurgerRecipeCorrect;
     }
 }

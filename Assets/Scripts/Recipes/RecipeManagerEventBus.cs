@@ -12,4 +12,8 @@ public class RecipeManagerEventBus : MonoBehaviour {
     public void InvokeOnRecipeRemovedFromQueue(BurgerRecipeSO burgerRecipeSO) {
         OnRecipeRemovedFromQueue?.Invoke(this, burgerRecipeSO);
     }
+    public event EventHandler OnWrongOrderDelivered;
+    public void InvokeOnWrongOrderDelivered() {
+        OnWrongOrderDelivered?.Invoke(this, EventArgs.Empty);
+    }
 }
