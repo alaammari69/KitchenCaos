@@ -2692,6 +2692,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1857486487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1857486488}
+  - component: {fileID: 1857486489}
+  - component: {fileID: 1857486490}
+  m_Layer: 0
+  m_Name: Recipe Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1857486488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857486487}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.4711304, y: 0.64734423, z: 0.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1857486489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857486487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e975dbb02a0f878b94453837a4eb65f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  possibleRecipes:
+  - {fileID: 11400000, guid: a509aeca975f0564099694408817db4c, type: 2}
+  - {fileID: 11400000, guid: 0f4da5aa2b378ce1f96e6f1040d32f96, type: 2}
+  - {fileID: 11400000, guid: 3139b834b5a81e3039a13bb28ac4dda0, type: 2}
+  - {fileID: 11400000, guid: ccd85c8e9c120c4c8945fea30d9bf57f, type: 2}
+  maxNbrRecipesOnQueue: 3
+--- !u!114 &1857486490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857486487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 191f72db144191f7088769c659ca1534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1896804437
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3511,3 +3574,4 @@ SceneRoots:
   - {fileID: 1797147605}
   - {fileID: 266488076}
   - {fileID: 562741123}
+  - {fileID: 1857486488}
