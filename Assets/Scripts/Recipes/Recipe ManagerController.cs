@@ -9,6 +9,7 @@ public class RecipeManagerController : MonoBehaviour {
     private List<BurgerRecipeSO> recipesOnQueue;
     public List<BurgerRecipeSO> RecipesOnQueue => recipesOnQueue;
     private RecipeManagerEventBus recipeManagerEventBus;
+    public RecipeManagerEventBus RecipeManagerEventBus => recipeManagerEventBus;
     private Coroutine currentCoroutine = null;
     private bool isRecievingNewOrders = true;
     public bool IsRecievingNewOrders => isRecievingNewOrders;
@@ -33,7 +34,12 @@ public class RecipeManagerController : MonoBehaviour {
         currentCoroutine = null;
     }
     private bool TryRemoveRecipeFromQueue(BurgerRecipeSO burgerRecipeSO) {
-        return recipesOnQueue.Remove(burgerRecipeSO);
+        if (recipesOnQueue.Remove(burgerRecipeSO)) {
+            recipeManagerEventBus.InvokeOnRecipeRemovedFromQueue(burgerRecipeSO);
+            return true;
+        }
+        return false;
+
     }
     private bool TryRemoveRecipeFromQueue(BurgerScript burgerScript) {
         bool allMatch;
