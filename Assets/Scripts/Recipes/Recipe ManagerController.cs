@@ -6,42 +6,62 @@ public class RecipeManagerController : MonoBehaviour {
     [SerializeField] private List<BurgerRecipeSO> possibleRecipes;
     [SerializeField] private int maxNbrRecipesOnQueue = 3;
     [SerializeField] private int delayBetweenRecipesInSec = 4;
-    private List<BurgerRecipeSO> recipesOnQueue;
-    public List<BurgerRecipeSO> RecipesOnQueue => recipesOnQueue;
+    [SerializeField] private float maxOrderPatienceInSec = 20f;
+    [SerializeField] private float minOrderPatienceInSec = 10f;
+    private List<Order> ordersOnQueue;
+    public List<Order> OrdersOnQueue => ordersOnQueue;
     private RecipeManagerEventBus recipeManagerEventBus;
     public RecipeManagerEventBus RecipeManagerEventBus => recipeManagerEventBus;
     private Coroutine currentCoroutine = null;
-    private bool isRecievingNewOrders = true;
+    [SerializeField] private bool isRecievingNewOrders = true;
     public bool IsRecievingNewOrders => isRecievingNewOrders;
     public void RecieveNewOrders(bool val) {
         isRecievingNewOrders = val;
     }
     void Awake() {
         recipeManagerEventBus = GetComponent<RecipeManagerEventBus>();
-        recipesOnQueue = new List<BurgerRecipeSO>();
+        ordersOnQueue = new List<Order>();
+        ordersToRemove = new List<Order>();
     }
     void Update() {
-        if (isRecievingNewOrders && recipesOnQueue.Count < maxNbrRecipesOnQueue && (currentCoroutine == null)) {
-            currentCoroutine = StartCoroutine(TryAddRecipeToQueue());
+        UpdatePatienceValues();
+
+        if (isRecievingNewOrders && ordersOnQueue.Count < maxNbrRecipesOnQueue && (currentCoroutine == null)) {
+            currentCoroutine = StartCoroutine(TryAddOrderToQueue());
         }
     }
-    private IEnumerator TryAddRecipeToQueue() {
+    private List<Order> ordersToRemove;
+    private void UpdatePatienceValues() {
+        foreach (Order order in ordersOnQueue) {
+            order.currentPatienceInSec -= Time.deltaTime;
+            if (order.currentPatienceInSec <= 0) {
+                ordersToRemove.Add(order);
+                recipeManagerEventBus.InvokeOnOrderMissed();
+            }
+        }
+        ordersToRemove.ForEach((o) => TryRemoveOrderFromQueue(o.burgerRecipeSO));
+        ordersToRemove.Clear();
+    }
+    private IEnumerator TryAddOrderToQueue() {
         yield return new WaitForSeconds(delayBetweenRecipesInSec);
         int randomIndex = Random.Range(0, possibleRecipes.Count);
         BurgerRecipeSO chosenRecipe = possibleRecipes[randomIndex];
-        recipesOnQueue.Add(chosenRecipe);
-        recipeManagerEventBus.InvokeOnRecipeAddedToQueue(chosenRecipe);
+        Order newOrder = new Order(chosenRecipe, Random.Range(minOrderPatienceInSec, maxOrderPatienceInSec));
+        ordersOnQueue.Add(newOrder);
+        recipeManagerEventBus.InvokeOnOrderAddedToQueue(newOrder);
         currentCoroutine = null;
     }
-    private bool TryRemoveRecipeFromQueue(BurgerRecipeSO burgerRecipeSO) {
-        if (recipesOnQueue.Remove(burgerRecipeSO)) {
-            recipeManagerEventBus.InvokeOnRecipeRemovedFromQueue(burgerRecipeSO);
+    private bool TryRemoveOrderFromQueue(BurgerRecipeSO burgerRecipeSO) {
+        Order order = ordersOnQueue.Find((o) => (o.burgerRecipeSO == burgerRecipeSO));
+        if (order != null) {
+            recipeManagerEventBus.InvokeOnOrderRemovedFromQueue(order);
+            ordersOnQueue.Remove(order);
             return true;
         }
         return false;
 
     }
-    private bool TryRemoveRecipeFromQueue(BurgerScript burgerScript) {
+    private bool TryRemoveOrderFromQueue(BurgerScript burgerScript) {
         bool allMatch;
         foreach (BurgerRecipeSO possibleRecipe in possibleRecipes) {
             allMatch = true;
@@ -52,7 +72,7 @@ public class RecipeManagerController : MonoBehaviour {
                         break;
                     }
                 }
-                if (allMatch) return TryRemoveRecipeFromQueue(possibleRecipe);
+                if (allMatch) return TryRemoveOrderFromQueue(possibleRecipe);
             }
             else {
                 continue;
@@ -61,7 +81,7 @@ public class RecipeManagerController : MonoBehaviour {
         return false;
     }
     public bool TrySendingOrder(BurgerScript burgerScript) {
-        bool isBurgerRecipeCorrect = TryRemoveRecipeFromQueue(burgerScript);
+        bool isBurgerRecipeCorrect = TryRemoveOrderFromQueue(burgerScript);
         if (!isBurgerRecipeCorrect) recipeManagerEventBus.InvokeOnWrongOrderDelivered();
         return isBurgerRecipeCorrect;
     }
