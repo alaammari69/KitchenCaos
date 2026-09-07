@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ClearCounterInteractionScript : CounterInteractionScript {
     protected override void InteractWithCounter(object o, EventArgs args) {
+        base.InteractWithCounter(o, args);
         Debug.Log(playerInRange.transform.name + "IS INTERACTING WITH " + transform.name);
 
         PlayerController playerController = playerInRange.GetComponent<PlayerController>();
@@ -11,11 +12,13 @@ public class ClearCounterInteractionScript : CounterInteractionScript {
         if (!playerController.HasChildKitchenObject()) {
             if (HasChildKitchenObject()) {
                 playerController.SetChildKitchenObject(TakeChildKitchenObject());
+                counterEventBus.InvokeOnPickupKitchenObject();
             }
         }
         else {
             if (!HasChildKitchenObject()) {
                 SetChildKitchenObject(playerController.TakeChildKitchenObject());
+                counterEventBus.InvokeOnDropKitchenObject();
             }
         }
     }
@@ -54,7 +57,7 @@ public class ClearCounterInteractionScript : CounterInteractionScript {
                 if (doesPlayerHaveBread && !doesCounterPlateHaveBurger) {
                     Destroy(playerInRange.TakeChildKitchenObject().gameObject);
                     Transform burger = Instantiate(counterPlateScript.BurgerSO.prefab).transform;
-                    burger.GetComponent<BurgerScript>().TryAddIngredient(playerKitchenObject); // playerKitchenObject IS bread in this case
+                    burger.GetComponent<BurgerScript>().TryAddIngredient(playerKitchenObject);// playerKitchenObject IS bread in this case
                     counterPlateScript.SetChildKitchenObject(burger);
                 }
                 else if (doesCounterPlateHaveBurger) {

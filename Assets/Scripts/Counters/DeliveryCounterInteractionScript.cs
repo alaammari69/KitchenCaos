@@ -5,14 +5,10 @@ using UnityEngine;
 
 public class DeliveryCounterInteractionScript : CounterInteractionScript {
     [SerializeField] private RecipeManagerController recipeManagerController;
+    private DeliveryCounterEventBus deliveryCounterEventBus;
     protected override void Awake() {
         base.Awake();
-    }
-    protected override void OnEnable() {
-        base.OnEnable();
-    }
-    protected override void OnDisable() {
-        base.OnDisable();
+        deliveryCounterEventBus = counterEventBus as DeliveryCounterEventBus;
     }
     protected override void InteractWithCounter(object o, EventArgs args) {
         base.InteractWithCounter(o, args);
@@ -20,8 +16,14 @@ public class DeliveryCounterInteractionScript : CounterInteractionScript {
             if (playerInRange.GetChildKitchenObject().TryGetComponent<PlateScript>(out PlateScript playerPlate)) {
                 GameObject plate = playerInRange.TakeChildKitchenObject().gameObject;
                 if (playerPlate.HasBurger(out BurgerScript burgerScript)) {
-                    recipeManagerController.TrySendingOrder(burgerScript);
+                    bool isCorrect = recipeManagerController.TrySendingOrder(burgerScript);
+                    if (isCorrect) {
+                        deliveryCounterEventBus.InvokeOnSuccessOrder();
+                        Destroy(plate);
+                        return;
+                    }
                 }
+                deliveryCounterEventBus.InvokeOnFailOrder();
                 Destroy(plate);
             }
         }

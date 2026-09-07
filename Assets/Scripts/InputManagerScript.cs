@@ -6,10 +6,6 @@ public class InputManagerScript : MonoBehaviour {
     private InputActions inputActions;
     public event EventHandler OnPlayerInteractPerformed;
     public event EventHandler OnPlayerInteractAlternatePerformed;
-    void OnEnable() {
-        inputActions.Player.Interact.performed += InvokeOnPlayerInteractPerformed;
-        inputActions.Player.InteractAlternate.performed += InvokeOnPlayerInteractAlternatePerformed;
-    }
     void OnDisable() {
         inputActions.Player.Interact.performed -= InvokeOnPlayerInteractPerformed;
         inputActions.Player.InteractAlternate.performed -= InvokeOnPlayerInteractAlternatePerformed;
@@ -20,11 +16,8 @@ public class InputManagerScript : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         inputActions.Player.Enable();
-    }
-
-    // Update is called once per frame
-    void Update() {
-
+        inputActions.Player.Interact.performed += InvokeOnPlayerInteractPerformed;
+        inputActions.Player.InteractAlternate.performed += InvokeOnPlayerInteractAlternatePerformed;
     }
 
     public Vector2 GetPlayerMovementVectorNormalized() {

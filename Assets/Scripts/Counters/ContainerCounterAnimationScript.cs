@@ -10,7 +10,7 @@ public class ContainerCounterAnimationScript : MonoBehaviour {
     void Awake() {
         counterEventBus = GetComponent<CounterEventBus>();
     }
-    void OnEnable() {
+    void Start() {
         counterEventBus.OnPlayerInteracted += OpenDoorAnimation;
     }
     void OnDisable() {

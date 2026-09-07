@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour, IKitchenObjectParent {
     playerEventBus = GetComponent<PlayerEventBus>();
     playerMovementScript = GetComponent<PlayerMovementScript>();
   }
-  void OnEnable() {
+  void Start() {
     inputManagerScript.OnPlayerInteractPerformed += playerEventBus.InvokeOnPlayerInteract;
     inputManagerScript.OnPlayerInteractAlternatePerformed += playerEventBus.InvokeOnPlayerInteractAlternate;
   }
@@ -19,17 +19,6 @@ public class PlayerController : MonoBehaviour, IKitchenObjectParent {
     inputManagerScript.OnPlayerInteractPerformed -= playerEventBus.InvokeOnPlayerInteract;
     inputManagerScript.OnPlayerInteractAlternatePerformed -= playerEventBus.InvokeOnPlayerInteractAlternate;
   }
-
-  // Start is called before the first frame update
-  void Start() {
-
-  }
-
-  // Update is called once per frame
-  void Update() {
-
-  }
-
 
   void FixedUpdate() {
     UpdateMovement();

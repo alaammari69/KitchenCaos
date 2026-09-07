@@ -7,7 +7,7 @@ public class CounterInteractionScript : MonoBehaviour, IKitchenObjectParent {
     protected virtual void Awake() {
         counterEventBus = GetComponent<CounterEventBus>();
     }
-    protected virtual void OnEnable() {
+    protected virtual void Start() {
         counterEventBus.OnPlayerInRange += PrepareIntercationOption;
         counterEventBus.OnPlayerOutOfRange += RemoveIntercationOption;
     }

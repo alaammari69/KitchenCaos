@@ -17,21 +17,6 @@ public class PlayerMovementScript : MonoBehaviour {
     void Awake() {
         playerEventBus = GetComponent<PlayerEventBus>();
     }
-    // Start is called before the first frame update
-    void Start() {
-
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
-
-    void FixedUpdate() {
-
-    }
-
-
 
     private bool wasPlayerMoving = false;
 

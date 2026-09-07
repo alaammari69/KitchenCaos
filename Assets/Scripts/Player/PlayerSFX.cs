@@ -9,7 +9,7 @@ public class PlayerSFX : MonoBehaviour {
     void Awake() {
         playerEventBus = GetComponentInParent<PlayerEventBus>();
     }
-    void OnEnable() {
+    void Start() {
         playerEventBus.OnPlayerStartedMoving += EnableWalkingSoundEffect;
         playerEventBus.OnPlayerStopedMoving += DisableWalkingSoundEffect;
     }

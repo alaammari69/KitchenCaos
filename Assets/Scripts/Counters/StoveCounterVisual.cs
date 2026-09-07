@@ -10,7 +10,7 @@ public class StoveCounterVisual : MonoBehaviour {
     void Awake() {
         stoveCounterEventBus = GetComponentInParent<StoveCounterEventBus>();
     }
-    void OnEnable() {
+    void Start() {
         stoveCounterEventBus.OnCookingStarted += EnableStoveOnVisual;
         stoveCounterEventBus.OnCookingStarted += EnableSizzlingParticles;
         stoveCounterEventBus.OnStoveInterrupted += DisableStoveOnVisual;

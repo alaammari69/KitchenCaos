@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class CuttingCounterInteractionScript : CounterInteractionScript {
     [SerializeField] private SlicingRecipeSO[] slicingRecipesArray;
-    protected override void OnEnable() {
-        base.OnEnable();
+    protected override void Start() {
+        base.Start();
         counterEventBus.OnKitchenObjectSliced += ChangeToSlicedVariant;
     }
     protected override void OnDisable() {
@@ -24,12 +24,14 @@ public class CuttingCounterInteractionScript : CounterInteractionScript {
             if (slicingRecipe != null) {
                 SetChildKitchenObject(playerController.TakeChildKitchenObject());
                 currentSlicingRecipe = slicingRecipe;
+                counterEventBus.InvokeOnDropKitchenObject();
 
             }
         }
         else if (HasChildKitchenObject()) {
             playerController.SetChildKitchenObject(TakeChildKitchenObject());
             currentSlicingRecipe = null;
+            counterEventBus.InvokeOnPickupKitchenObject();
         }
 
     }

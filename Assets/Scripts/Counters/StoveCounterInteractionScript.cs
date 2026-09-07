@@ -17,8 +17,8 @@ public class StoveCounterInteractionScript : CounterInteractionScript {
         stoveCounterController = GetComponent<StoveCounterController>();
         stoveCounterEventBus = GetComponent<StoveCounterEventBus>();
     }
-    protected override void OnEnable() {
-        base.OnEnable();
+    protected override void Start() {
+        base.Start();
         stoveCounterEventBus.OnStoveInterrupted += InterruptCooking;
     }
     protected override void InteractWithCounter(object o, EventArgs args) {

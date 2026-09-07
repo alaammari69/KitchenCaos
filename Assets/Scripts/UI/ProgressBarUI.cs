@@ -18,15 +18,14 @@ public class ProgressBarUI : MonoBehaviour {
         stoveCounterController = GetComponentInParent<StoveCounterController>();
         stoveCounterEventBus = GetComponentInParent<StoveCounterEventBus>();
     }
-    void OnEnable() {
+    void Start() {
         stoveCounterEventBus.OnCookingStarted += EnableProgressBar;
 
         stoveCounterEventBus.OnBurningStarted += ChangeToBurningColor;
 
         stoveCounterEventBus.OnStoveInterrupted += DisableProgressBar;
         stoveCounterEventBus.OnBurningFinished += DisableProgressBar;
-    }
-    void Start() {
+
         gameObject.SetActive(false);
     }
 

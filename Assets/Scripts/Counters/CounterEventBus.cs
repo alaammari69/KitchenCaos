@@ -28,6 +28,15 @@ public class CounterEventBus : MonoBehaviour {
     public void InvokeOnKitchenObjectSliced() {
         OnKitchenObjectSliced?.Invoke(this, EventArgs.Empty);
     }
+    public event EventHandler OnPickupKitchenObject;
+    public void InvokeOnPickupKitchenObject() {
+        OnPickupKitchenObject?.Invoke(this, EventArgs.Empty);
+    }
+    public event EventHandler OnDropKitchenObject;
+    public void InvokeOnDropKitchenObject() {
+        OnDropKitchenObject?.Invoke(this, EventArgs.Empty);
+    }
+
     protected void PrintDebug(object message) {
         if (enableEventsDebug) {
             Debug.Log(message);

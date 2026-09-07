@@ -10,7 +10,7 @@ public class CuttingCounterAnimationScript : MonoBehaviour {
     void Awake() {
         counterEventBus = GetComponent<CounterEventBus>();
     }
-    void OnEnable() {
+    void Start() {
         counterEventBus.OnInteractAlternate += StartSliceAnimation;
     }
     void OnDisable() {
