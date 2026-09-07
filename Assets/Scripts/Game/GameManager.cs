@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void AddMissedOrderToCount(object o, EventArgs args) {
-        currentNbrOfFails--;
+        currentNbrOfFails++;
         if (currentNbrOfFails == maxAllowedMisses) {
             GameManagerEventBus.InvokeOnGameOver();
             GameManagerEventBus.InvokeOnGameLost();
