@@ -28,11 +28,11 @@ public class GameManager : MonoBehaviour {
         GameManagerEventBus.InvokeOnGameStart();
 
         recipeManagerController.RecipeManagerEventBus.OnOrderMissed += AddMissedOrderToCount;
-        recipeManagerController.RecipeManagerEventBus.OnOrderRemovedFromQueue += AddSuccessfullOrderToCount;
+        recipeManagerController.RecipeManagerEventBus.OnCorrectOrderDelivered += AddSuccessfullOrderToCount;
     }
     void OnDisable() {
         recipeManagerController.RecipeManagerEventBus.OnOrderMissed -= AddMissedOrderToCount;
-        recipeManagerController.RecipeManagerEventBus.OnOrderRemovedFromQueue -= AddSuccessfullOrderToCount;
+        recipeManagerController.RecipeManagerEventBus.OnCorrectOrderDelivered -= AddSuccessfullOrderToCount;
     }
 
     private void AddMissedOrderToCount(object o, EventArgs args) {
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour {
             GameManagerEventBus.InvokeOnGameLost();
         }
     }
-    private void AddSuccessfullOrderToCount(object o, Order order) {
+    private void AddSuccessfullOrderToCount(object o, EventArgs args) {
         currentCorrectOrdersNbr++;
         if (currentCorrectOrdersNbr == minOrdersToWin) {
             GameManagerEventBus.InvokeOnGameOver();

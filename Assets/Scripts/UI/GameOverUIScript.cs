@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameOverUIScript : MonoBehaviour {
     [SerializeField] private GameObject uiPannel;
     [SerializeField] private GameObject winningText;
     [SerializeField] private GameObject losingText;
+    [SerializeField] private Button restart;
     void Start() {
         GameManager.Instance.GameManagerEventBus.OnGameOver += ShowGameOverScreen;
         GameManager.Instance.GameManagerEventBus.OnGameWon += ShowWinningText;
@@ -22,6 +24,12 @@ public class GameOverUIScript : MonoBehaviour {
     }
     private void ShowGameOverScreen(object o, EventArgs args) {
         uiPannel.SetActive(true);
+        restart.Select();
+    }
+    public void HideGameOverUI() {
+        winningText.SetActive(false);
+        losingText.SetActive(false);
+        uiPannel.SetActive(false);
     }
 
 }

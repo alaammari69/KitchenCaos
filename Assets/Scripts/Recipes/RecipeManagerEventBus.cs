@@ -21,4 +21,8 @@ public class RecipeManagerEventBus : MonoBehaviour {
         OnOrderMissed?.Invoke(this, EventArgs.Empty);
         Debug.Log("ORDER EXPIRED");
     }
+    public event EventHandler OnCorrectOrderDelivered;
+    public void InvokeOnCorrectOrderDelivered() {
+        OnCorrectOrderDelivered?.Invoke(this, EventArgs.Empty);
+    }
 }

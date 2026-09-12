@@ -82,7 +82,12 @@ public class RecipeManagerController : MonoBehaviour {
     }
     public bool TrySendingOrder(BurgerScript burgerScript) {
         bool isBurgerRecipeCorrect = TryRemoveOrderFromQueue(burgerScript);
-        if (!isBurgerRecipeCorrect) recipeManagerEventBus.InvokeOnWrongOrderDelivered();
+        if (isBurgerRecipeCorrect) {
+            recipeManagerEventBus.InvokeOnCorrectOrderDelivered();
+        }
+        else {
+            recipeManagerEventBus.InvokeOnWrongOrderDelivered();
+        }
         return isBurgerRecipeCorrect;
     }
 }
